@@ -42,13 +42,15 @@ def create_app(test_config=None):
     def get_private():
         return jsonify({
             'success': True,
-            'current_user': _request_ctx_stack.top.curr_user
+            'current_user': _request_ctx_stack.top.curr_user,
+            'content': ''
         })
 
     @app.route('/public')
     def get_public():
         return jsonify({
-            'success': True
+            'success': True,
+            'content': ''
         })
 
     # ERROR HANDELERS
@@ -59,6 +61,7 @@ def create_app(test_config=None):
             'message': error.description,
             'code': 422
         }), 422
+
     @app.errorhandler(404)
     def not_found(error):
         return jsonify({
@@ -66,6 +69,7 @@ def create_app(test_config=None):
             'message': error.description,
             'code': 404
         }), 404
+
     @app.errorhandler(405)
     def method_not_allowed(error):
         return jsonify({
@@ -73,6 +77,7 @@ def create_app(test_config=None):
             'message': error.description,
             'code': 405
         }), 405
+
     @app.errorhandler(AuthError)
     def auth_error(error):
         return jsonify({
